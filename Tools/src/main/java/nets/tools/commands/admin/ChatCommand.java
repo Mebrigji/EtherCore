@@ -1,9 +1,7 @@
 package nets.tools.commands.admin;
 
 import dev.jorel.commandapi.CommandTree;
-import dev.jorel.commandapi.arguments.IntegerArgument;
-import dev.jorel.commandapi.arguments.LiteralArgument;
-import dev.jorel.commandapi.arguments.StringArgument;
+import dev.jorel.commandapi.arguments.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.saidora.api.builders.InventoryBuilder;
@@ -14,7 +12,9 @@ import nets.tools.manager.ChatManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class ChatCommand {
 
@@ -86,6 +86,24 @@ public class ChatCommand {
                                     Placeholder.component("enderchest", parseComponent(ChatManager.Flag.ENDER_CHEST)),
                                     Placeholder.component("kills", parseComponent(ChatManager.Flag.KILLS))).send(commandSender);
                         }))
+                .then(new LiteralArgument("flag")
+                        .combineWith(parseFlagArgument("flag"), new BooleanArgument("enable"))
+                        .executes((commandSender, commandArguments) -> {
+                            ChatManager.Flag flag = (ChatManager.Flag) commandArguments.get("flag");
+                            boolean enable = (boolean) commandArguments.get("enable");
+                            if(ChatManager.getInstance().isFlagEnabled(flag) && enable){
+                                NotificationBuilder.of(NotificationBuilder.NotificationType.CHAT, Main.getInstance().getMessages().COMMAND_CHAT_FLAG_ALREADY_ENABLED, Placeholder.parsed("flag", flag.name())).send(commandSender);
+                            } else if(!ChatManager.getInstance().isFlagEnabled(flag) && !enable){
+                                NotificationBuilder.of(NotificationBuilder.NotificationType.CHAT, Main.getInstance().getMessages().COMMAND_CHAT_FLAG_ALREADY_DISABLED, Placeholder.parsed("flag", flag.name())).send(commandSender);
+                            } else if(enable){
+                                NotificationBuilder.of(NotificationBuilder.NotificationType.CHAT, Main.getInstance().getMessages().COMMAND_CHAT_FLAG_ENABLED, Placeholder.parsed("flag", flag.name())).send(commandSender);
+                            } else {
+                                NotificationBuilder.of(NotificationBuilder.NotificationType.CHAT, Main.getInstance().getMessages().COMMAND_CHAT_FLAG_DISABLED, Placeholder.parsed("flag", flag.name())).send(commandSender);
+                            }
+                            if(enable) ChatManager.getInstance().enableFlag(flag);
+                            else ChatManager.getInstance().disableFlag(flag);
+                        })
+                )
                 .then(new LiteralArgument("panel")
                         .executesPlayer((player, commandArguments) -> {
                             InventoryBuilder inventoryBuilder = new InventoryBuilder(Bukkit.createInventory(null, 3 * 9, ComponentHelper.asComponent("Zarządzanie czatem")));
@@ -138,8 +156,17 @@ public class ChatCommand {
                 }).register();
     }
 
+    private Argument<ChatManager.Flag> parseFlagArgument(String nodeName){
+        return new CustomArgument<>(new StringArgument(nodeName), customArgumentInfo -> Arrays.stream(ChatManager.Flag.values()).filter(flag -> flag.name().equalsIgnoreCase(customArgumentInfo.input())).findAny().orElseThrow(() -> CustomArgument.CustomArgumentException.fromMessageBuilder(new CustomArgument.MessageBuilder("Wrong flag input ").appendArgInput()))).includeSuggestions((suggestionInfo, suggestionsBuilder) -> {
+            for (ChatManager.Flag value : ChatManager.Flag.values()) {
+                suggestionsBuilder.suggest(value.name().toLowerCase());
+            }
+            return suggestionsBuilder.buildFuture();
+        });
+    }
+
     private Component parseComponent(ChatManager.Flag flag){
-        return ChatManager.getInstance().isFlagEnabled(flag) ? ComponentHelper.asComponent(Main.getInstance().getMessages().COMMAND_CHAT_FLAG_FORMAT_ENABLED, Placeholder.parsed("flag-name", flag.name())) : ComponentHelper.asComponent(Main.getInstance().getMessages().COMMAND_CHAT_FLAG_FORMAT_DISABLED, Placeholder.parsed("flag-name", flag.name()));
+        return ChatManager.getInstance().isFlagEnabled(flag) ? ComponentHelper.asComponent(Main.getInstance().getMessages().COMMAND_CHAT_FLAGS_FORMAT_ENABLED, Placeholder.parsed("flag-name", flag.name())) : ComponentHelper.asComponent(Main.getInstance().getMessages().COMMAND_CHAT_FLAGS_FORMAT_DISABLED, Placeholder.parsed("flag-name", flag.name()));
     }
 
 }

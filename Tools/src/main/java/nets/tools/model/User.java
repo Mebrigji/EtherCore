@@ -5,6 +5,8 @@ import nets.tools.objects.UserController;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -67,6 +69,12 @@ public interface User extends QueueModel, Rank, Statistics{
     void updateKitDelay(Kit kit);
 
     void initialize(Player player);
+
+    List<Group> getGroups();
+    Group getHighestGroup();
+    Map<Group, Long> getAllGroups();
+
+    VanishedPlayer asVanishedPlayer();
 
     UserController asController();
 

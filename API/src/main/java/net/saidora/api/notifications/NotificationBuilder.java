@@ -61,6 +61,12 @@ public class NotificationBuilder {
         provider.send(player);
     }
 
+    public void sendMany(CommandSender... commandSenders){
+        for (CommandSender commandSender : commandSenders) {
+            provider.send(commandSender);
+        }
+    }
+
     public enum NotificationType {
         CHAT,
         ACTION_BAR,

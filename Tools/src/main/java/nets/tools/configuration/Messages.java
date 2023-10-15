@@ -61,7 +61,7 @@ public class Messages extends OkaeriConfig {
     public String COMMAND_ENCHANT_AIR = "&4[ITEM-ENCHANT] &cPrzedmiot nie może być potwietrzem.";
 
 
-    public String COMMAND_PING = "&c[⚑] &Twój ping wynosi <gradient:#F01230:#B2273A><ping>ms.</gradient>";
+    public String COMMAND_PING = "&c[⚑] &7Twój ping wynosi <gradient:#F01230:#B2273A><ping>ms.</gradient>";
     public String COMMAND_PING_OTHER = "&c[⚑] &7Ping użytkownika <gradient:#F01230:#B2273A><player></gradient> &7wynosi <gradient:#F01230:#B2273A><ping>ms.</gradient>";
 
     public String COMMAND_GIVE = "&c[⚑] &7Gracz <gradient:#F01230:#B2273A><player></gradient> &7pomyślnie otrzymał nowy przedmiot. <gradient:#F01230:#B2273A><item></gradient>";
@@ -92,10 +92,16 @@ public class Messages extends OkaeriConfig {
 
     public String COMMAND_CHAT_LEVEL_CHANGED = "\n[<gradient:#D5AC04:#EDD262>sʏsᴛᴇᴍ</gradient>] ᴢᴍɪᴇɴɪᴏɴᴏ <gradient:#0575CC:#66B0E9>ᴡʏᴍᴀɢᴀɴᴀ ɪʟᴏsᴄ</gradient> ᴡʏᴋᴏᴘᴀɴʏᴄʜ ʙʟᴏᴋᴏᴡ ᴀʙʏ ᴘɪsᴀᴄ ɴᴀ ᴄᴢᴀᴄɪᴇ. ᴏᴅ ᴛᴇʀᴀᴢ ᴏʙᴏᴡɪᴀᴢʏᴡᴀɴᴇ ᴍɪɴɪᴍᴜᴍ ᴛᴏ <gradient:#0575CC:#66B0E9><amount> ʙʟᴏᴋᴏᴡ ⛏</gradient>\n";
 
+    public String COMMAND_CHAT_FLAG_ALREADY_ENABLED = "&c[⚑] &7Flaga <gradient:#CE0A01:#F77069><flag></gradient> jest już &awłączona.";
+    public String COMMAND_CHAT_FLAG_ALREADY_DISABLED = "&c[⚑] &7Flaga <gradient:#CE0A01:#F77069><flag></gradient> jest już &cwyłączona.";
+
+    public String COMMAND_CHAT_FLAG_DISABLED = "&c[⚑] &7Flaga <gradient:#CE0A01:#F77069><flag></gradient> została &cwyłączona.";
+    public String COMMAND_CHAT_FLAG_ENABLED = "&c[⚑] &7Flaga <gradient:#CE0A01:#F77069><flag></gradient> została &awłączona.";
+
     public String COMMAND_CHAT_FLAGS = "&c[⚑] &7ᴅᴏsᴛᴇᴘɴᴇ ғʟᴀɢɪ ᴅʟᴀ ᴄᴢᴀᴛᴜ:\n<items>\n<inventory>\n<enderchest>\n<kills>";
 
-    public String COMMAND_CHAT_FLAG_FORMAT_ENABLED = " &7- &fFlaga: <flag-name> <click:run_command:\"/chat flag <flag-name> false\">&c[ ᴡʏʟᴀᴄᴢ << ᴋʟɪᴋɴɪᴊ ]</click>";
-    public String COMMAND_CHAT_FLAG_FORMAT_DISABLED = " &7- &fFlaga: <flag-name> <click:run_command:\"/chat flag <flag-name> true\">&a[ ᴡʟᴀᴄᴢ << ᴋʟɪᴋɴɪᴊ ]</click>";
+    public String COMMAND_CHAT_FLAGS_FORMAT_ENABLED = " &7- &fFlaga: <flag-name> <hover:show_text:\"Kliknij, aby wyłączyć flage\"><click:run_command:\"/chat flag <flag-name> false\">&c[ ᴡʏʟᴀᴄᴢ << ᴋʟɪᴋɴɪᴊ ]</click></hover>";
+    public String COMMAND_CHAT_FLAGS_FORMAT_DISABLED = " &7- &fFlaga: <flag-name> <hover:show_text:\"Kliknij, aby włączyć flage\"><click:run_command:\"/chat flag <flag-name> true\">&a[ ᴡʟᴀᴄᴢ << ᴋʟɪᴋɴɪᴊ ]</click></hover>";
 
     public String COMMAND_TELEPORT_TO_PLAYER = "&c[⚑] &7Pomyślnie przeteleportowano do gracza <gradient:#F01230:#B2273A><player></gradient>";
     public String COMMAND_TELEPORT_TARGET_TO_PLAYER = "&c[⚑] &7Pomyślnie przeteleportowano gracza <gradient:#F01230:#B2273A><target></gradient> na lokalizacje gracza <gradient:#F01230:#B2273A><player></gradient>";
@@ -158,8 +164,8 @@ public class Messages extends OkaeriConfig {
             &c[⚑] <gradient:#F01230:#B2273A>/ʜᴏʟᴏɢʀᴀᴍ ᴄʀᴇᴀᴛᴇ <ɴᴀᴢᴡᴀ> <ᴛᴇxᴛ> <ᴀᴄᴛɪᴠᴀᴛɪᴏɴ ʀᴀɴɢᴇ></gradient> &8- &7Stwórz nowy hologram.
             """;
 
-    public String COMMAND_MESSAGE_FORMAT_SENDER = "<gradient:#96D005:#C5E17D>[✉]</gradient> <gradient:#F01230:#B2273A>Ja</gradient> &f-> <gradient:#F01230:#B2273A><player></gradient> <#E5E5E5>: <gradient:#B4B4B4:#CBCBCB><message></gradient>";
-    public String COMMAND_MESSAGE_FORMAT_RECEIVER = "<gradient:#96D005:#C5E17D>[✉]</gradient> <gradient:#F01230:#B2273A><player></gradient><#E5E5E5> &f-> <gradient:#F01230:#B2273A>Ja</gradient>: <gradient:#B4B4B4:#CBCBCB><message></gradient>";
+    public String COMMAND_MESSAGE_FORMAT_SENDER = "<gradient:#F01230:#B2273A>[✉]</gradient> <#96D005>Ja &7-> <#C5E17D><player><#E5E5E5>: <gradient:#B4B4B4:#CBCBCB><message></gradient>";
+    public String COMMAND_MESSAGE_FORMAT_RECEIVER = "<gradient:#F01230:#B2273A>[✉]</gradient> <#96D005><player><#E5E5E5> &7-> <#C5E17D>Ja<#E5E5E5>: <gradient:#B4B4B4:#CBCBCB><message></gradient>";
     public String COMMAND_MESSAGE_REPLY_NOT_FOUND = "&c[⚑] &7Nie znaleziono nikogo komu możesz odpisać.";
 
     public String COMMAND_HAT_AIR = "&c[⚑] Nie możesz założyć na głowe powietrza.";

@@ -114,6 +114,7 @@ public class TabFactory {
                 return String.valueOf(size != 0 ? totalPing / size : 0);
             });
 
+            map.put("group", extension -> user.getHighestGroup().display());
             map.put("brotherhood_info-name", extension -> user.getBrotherhood().map(Brotherhood::name).orElse("---"));
             map.put("brotherhood_info-owner", extension -> user.getBrotherhood().map(Brotherhood::owner).orElse("---"));
             map.put("brotherhood_info-members-online", extension -> user.getBrotherhood().map(brotherhood -> String.valueOf(brotherhood.getMembers().stream().filter(u -> u.getPlayer().isPresent()).count())).orElse("0"));

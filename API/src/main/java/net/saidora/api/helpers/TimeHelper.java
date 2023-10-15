@@ -139,7 +139,7 @@ public class TimeHelper {
 
         if(seconds > 0) format += seconds + "sek";
 
-        return format.isEmpty() ? "<1sek" : format;
+        return format.isEmpty() ? "<1sek" : format.trim();
     }
 
     public String timestamp(){

@@ -51,11 +51,29 @@ public class MathHelper {
         }
     }
 
+    public static boolean isInteger(String context){
+        try {
+            Integer.parseInt(context);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
     public static Double getDouble(String context){
         try {
             return Double.parseDouble(context);
         } catch (NumberFormatException e){
             return 0.0D;
+        }
+    }
+
+    public static boolean isDouble(String context){
+        try {
+            Double.parseDouble(context);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
         }
     }
 
@@ -67,11 +85,29 @@ public class MathHelper {
         }
     }
 
+    public static boolean isLong(String context){
+        try {
+            Long.parseLong(context);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
     public static Float getFloat(String context){
         try {
             return Float.parseFloat(context);
         } catch (NumberFormatException e){
             return 0F;
+        }
+    }
+
+    public static boolean isFloat(String context){
+        try {
+            Float.parseFloat(context);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
         }
     }
 

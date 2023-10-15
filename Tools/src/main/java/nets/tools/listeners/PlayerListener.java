@@ -1,9 +1,14 @@
 package nets.tools.listeners;
 
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import net.saidora.api.helpers.ComponentHelper;
 import net.saidora.api.notifications.NotificationBuilder;
 import nets.tools.Main;
+import nets.tools.events.PlayerCommandEvent;
+import nets.tools.events.PlayerSendChatMessageEvent;
+import nets.tools.events.UnknownCommandEvent;
 import nets.tools.manager.ChatManager;
 import nets.tools.manager.UserManager;
 import nets.tools.model.PlayerInventory;
@@ -19,22 +24,27 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.AnvilInventory;
-import org.bukkit.inventory.BlastingRecipe;
-import org.bukkit.inventory.EntityEquipment;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.Repairable;
-import org.bukkit.potion.PotionBrewer;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public class PlayerListener implements Listener{
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void handlePlayerPreLoginEvent(AsyncPlayerPreLoginEvent event){
-        if((!event.getName().equals("polski2345") && Arrays.asList("51.79.240.230", "31.183.161.215", "147.28.173.143", "37.248.208.179").contains(event.getAddress().getHostAddress())) || Bukkit.getOnlinePlayers().stream().anyMatch(player -> player.getName().equals(event.getName()))) {
-            event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_BANNED);
-        }
+    public void handlePlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event){
+        String commandLine = event.getMessage();
+
+        Optional.ofNullable(Bukkit.getCommandMap().getCommand(commandLine.split(" ")[0].substring(1))).ifPresentOrElse(command -> {
+            PlayerCommandEvent commandEvent = new PlayerCommandEvent(command, event.getPlayer());
+            commandEvent.call();
+            event.setCancelled(commandEvent.isCancelled());
+        }, () -> {
+            UnknownCommandEvent commandEvent = new UnknownCommandEvent(commandLine, event.getPlayer());
+            commandEvent.call();
+            event.setCancelled(commandEvent.isCancelled());
+        });
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -160,6 +170,23 @@ public class PlayerListener implements Listener{
                 event.setCancelled(true);
                 return;
             }
+
+            PlayerSendChatMessageEvent messageEvent = new PlayerSendChatMessageEvent(user, event.getPlayer(), player -> "<player>: <message>", event.getMessage());
+            messageEvent.call();
+            if(messageEvent.isCancelled()) return;
+
+            Component component = Component.text(messageEvent.getMessage());
+            if(event.getPlayer().hasPermission("ethercraft.bypass.chat")) component = ComponentHelper.asComponent(messageEvent.getMessage());
+            else if(event.getPlayer().hasPermission("ethercraft.chat.color")) component = ComponentHelper.asComponent(messageEvent.getMessage(), StandardTags.color(), StandardTags.gradient(), StandardTags.rainbow(), StandardTags.decorations());
+
+
+            event.setCancelled(true);
+            Component finalComponent = component;
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                Component format = ComponentHelper.asComponent(messageEvent.getFormatForViewer().apply(player), Placeholder.component("message", finalComponent), Placeholder.parsed("player", event.getPlayer().getName()));
+                player.sendMessage(format);
+            });
+
         });
     }
 }

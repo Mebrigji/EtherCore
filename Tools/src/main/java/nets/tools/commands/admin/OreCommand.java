@@ -12,10 +12,13 @@ import nets.tools.manager.OreManager;
 import nets.tools.model.Ore;
 import nets.tools.objects.OreController;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.codehaus.plexus.util.cli.Arg;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class OreCommand {
 
@@ -34,14 +37,14 @@ public class OreCommand {
                 })
                 .then(new LiteralArgument("add")
                         .withPermission("ethercraft.command.admin.ore.add")
-                        .combineWith(new ItemStackArgument("itemToGenerate"), new DoubleArgument("chance"), new IntegerArgument("yCord"), new TextArgument("displayName"), new TextArgument("lore"))
+                        .combineWith(createBlockArgument("blockToGenerate"), new DoubleArgument("chance"), new IntegerArgument("yCord"), new TextArgument("displayName"), new TextArgument("lore"))
                         .executes((commandSender, commandArguments) -> {
-                            ItemStack itemStack = (ItemStack) commandArguments.get("itemToGenerate");
+                            Material material = (Material) commandArguments.get("blockToGenerate");
                             double chance = (double) commandArguments.get("chance");
                             int yCord = (int) commandArguments.get("yCord");
                             String displayName = (String) commandArguments.get("displayName");
                             List<String> lore = Arrays.stream(((String)commandArguments.get("lore")).split("%nl%")).toList();
-                            Ore ore = new OreController(itemStack.getType(), chance, yCord, displayName, lore);
+                            Ore ore = new OreController(material, chance, yCord, displayName, lore);
                             OreManager.getInstance().getList().add(ore);
                             NotificationBuilder.of(NotificationBuilder.NotificationType.CHAT, Main.getInstance().getMessages().COMMAND_ORE_ADD).send(commandSender);
                         })
@@ -73,6 +76,18 @@ public class OreCommand {
                         )
                 )
                 .register();
+    }
+
+    private Argument<Material> createBlockArgument(String nodeName){
+        return new CustomArgument<>(new StringArgument(nodeName), customArgumentInfo -> Arrays.stream(Material.values()).filter(Material::isBlock).filter(material -> material.name().equalsIgnoreCase(customArgumentInfo.input())).findAny().orElseThrow(() -> CustomArgument.CustomArgumentException.fromMessageBuilder(new CustomArgument.MessageBuilder("This type of block does not exists.")))).includeSuggestions((suggestionInfo, suggestionsBuilder) -> {
+            Arrays.stream(Material.values()).filter(Material::isBlock).forEach(material -> suggestionsBuilder.suggest(material.name().toLowerCase()));
+            return suggestionsBuilder.buildFuture();
+        }).includeSuggestions((suggestionInfo, suggestionsBuilder) -> {
+            Arrays.stream(Material.values()).filter(Material::isBlock).forEach(material -> {
+                suggestionsBuilder.suggest(material.name().toLowerCase());
+            });
+            return suggestionsBuilder.buildFuture();
+        });
     }
 
     private Argument<Ore> createOreArgument(String nodeName){

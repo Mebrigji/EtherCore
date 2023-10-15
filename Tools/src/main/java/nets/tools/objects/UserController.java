@@ -43,6 +43,9 @@ public class UserController implements User {
 
     private PlayerInventory playerInventory;
     private Inventory enderChest;
+    private VanishedPlayer vanishedPlayer;
+
+    private Map<Group, Long> groups = new LinkedHashMap<>();
 
     private final Map<Integer, BossBar> overlayMap  = new HashMap<>();
 
@@ -422,6 +425,26 @@ public class UserController implements User {
     }
 
     @Override
+    public List<Group> getGroups() {
+        return groups.keySet().stream().toList();
+    }
+
+    @Override
+    public Group getHighestGroup() {
+        return groups.keySet().stream().min(Comparator.comparingInt(Group::priority)).orElse(Group.DEFAULT);
+    }
+
+    @Override
+    public Map<Group, Long> getAllGroups() {
+        return groups;
+    }
+
+    @Override
+    public VanishedPlayer asVanishedPlayer() {
+        return vanishedPlayer;
+    }
+
+    @Override
     public UserController asController() {
         return this;
     }
@@ -465,6 +488,10 @@ public class UserController implements User {
     @Override
     public double getBalance() {
         return balance;
+    }
+
+    public void setVanishedPlayer(VanishedPlayer vanishedPlayer) {
+        this.vanishedPlayer = vanishedPlayer;
     }
 
     @Override

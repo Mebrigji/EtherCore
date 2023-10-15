@@ -1,6 +1,7 @@
 package nets.tools.commands.player;
 
 import dev.jorel.commandapi.CommandAPICommand;
+import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.GreedyStringArgument;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import net.kyori.adventure.text.Component;
@@ -14,21 +15,23 @@ import org.bukkit.entity.Player;
 public class MessageCommand {
 
     public void register(){
-        new CommandAPICommand("msg")
-                .withAliases("message ", "tell", "wiadomosc")
-                .withArguments(new PlayerArgument("target"), new GreedyStringArgument("message"))
-                .executes((commandSender, commandArguments) -> {
-                    Player player = (Player) commandArguments.get("target");
-                    String message = (String) commandArguments.get("message");
-                    Component text = Component.text(message);
-                    ComponentHelper.futureComponent(Main.getInstance().getMessages().COMMAND_MESSAGE_FORMAT_SENDER, Placeholder.parsed("player", player.getName()), Placeholder.component("message", text)).thenAccept(commandSender::sendMessage);
-                    ComponentHelper.futureComponent(Main.getInstance().getMessages().COMMAND_MESSAGE_FORMAT_RECEIVER, Placeholder.parsed("player", commandSender.getName()), Placeholder.component("message", text)).thenAccept(player::sendMessage);
+        new CommandTree("msg")
+                .withAliases("message", "tell", "wiadomosc")
+                .then(new PlayerArgument("target")
+                        .combineWith(new GreedyStringArgument("message"))
+                        .executes((commandSender, commandArguments) -> {
+                            Player player = (Player) commandArguments.get("target");
+                            String message = (String) commandArguments.get("message");
+                            Component text = Component.text(message);
+                            ComponentHelper.futureComponent(Main.getInstance().getMessages().COMMAND_MESSAGE_FORMAT_SENDER, Placeholder.parsed("player", player.getName()), Placeholder.component("message", text)).thenAccept(commandSender::sendMessage);
+                            ComponentHelper.futureComponent(Main.getInstance().getMessages().COMMAND_MESSAGE_FORMAT_RECEIVER, Placeholder.parsed("player", commandSender.getName()), Placeholder.component("message", text)).thenAccept(player::sendMessage);
 
-                    PlayerExtension.getPlayerExtend(player, playerExtension -> {
+                            PlayerExtension.getPlayerExtend(player, playerExtension -> {
 
-                        if(commandSender instanceof Player) playerExtension.addPersistentDataObject("reply", commandSender.getName());
-                    });
-                }).override();
+                                if(commandSender instanceof Player) playerExtension.addPersistentDataObject("reply", commandSender.getName());
+                            });
+                        })
+                ).override();
 
         new CommandAPICommand("reply")
                 .withAliases("r", "odpisz")

@@ -9,6 +9,9 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class GameModeCommand {
 
@@ -40,12 +43,31 @@ public class GameModeCommand {
                 .override();
     }
 
+    private final Map<String, GameMode> mappings = new LinkedHashMap<>(){{
+        put("spectator", GameMode.SPECTATOR);
+        put("3", GameMode.SPECTATOR);
+
+        put("adventure", GameMode.ADVENTURE);
+        put("2", GameMode.ADVENTURE);
+
+        put("creative", GameMode.CREATIVE);
+        put("1", GameMode.CREATIVE);
+
+        put("survival", GameMode.SURVIVAL);
+        put("0", GameMode.SURVIVAL);
+    }};
+
     private Argument<GameMode> createGameModeArgument(String nodeName){
         return new CustomArgument<>(new StringArgument(nodeName), info -> {
-            java.util.Optional<GameMode> gameMode = Arrays.stream(GameMode.values()).filter(mode -> mode.name().equalsIgnoreCase(info.input())).findFirst();
-            if(gameMode.isPresent()){
-                return gameMode.orElse(null);
-            } else throw CustomArgument.CustomArgumentException.fromMessageBuilder(new CustomArgument.MessageBuilder("Wrong game type argument ").appendArgInput());
+            GameMode gameMode = null;
+            for (String s : mappings.keySet()) {
+                if(info.input().equalsIgnoreCase(s)){
+                    gameMode = mappings.get(s);
+                    break;
+                }
+            }
+            if(gameMode == null) throw CustomArgument.CustomArgumentException.fromMessageBuilder(new CustomArgument.MessageBuilder("Wrong game type argument ").appendArgInput());
+            return gameMode;
         }).includeSuggestions((suggestionInfo, suggestionsBuilder) -> suggestionsBuilder
                 .suggest("creative")
                 .suggest("survival")

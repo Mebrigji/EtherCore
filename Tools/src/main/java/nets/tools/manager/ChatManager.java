@@ -42,6 +42,14 @@ public class ChatManager {
         return flags.contains(flag);
     }
 
+    public void enableFlag(Flag flag){
+        if(!flags.contains(flag)) flags.add(flag);
+    }
+
+    public void disableFlag(Flag flag){
+        flags.remove(flag);
+    }
+
     public void setFlags(List<Flag> flags) {
         this.flags = flags;
     }

@@ -138,6 +138,10 @@ public class PlayerExtension extends Player.Spigot {
         old.respawn();
     }
 
+    public boolean containsPersistentDataObject(String key){
+        return persistentDataContainer.containsKey(key);
+    }
+
     public <T> T getPersistentDataObject(String key, Class<T> type){
         if(!persistentDataContainer.containsKey(key)) return null;
         Object object = persistentDataContainer.get(key);

@@ -37,15 +37,16 @@ public class BrotherhoodConfiguration extends OkaeriConfig {
             <gradient:#0681C3:#78BADE>[⚓] /ʙʀᴀᴄᴛᴡᴏ sᴏᴊᴜsᴢ</gradient> &7- &fsᴘʀᴀᴡᴅᴢ ᴋᴏᴍᴇɴᴅʏ ᴅᴏ ᴢᴀʀᴢᴀᴅᴢᴀɴɪᴀ sᴏᴊᴜsᴢᴀᴍɪ
             """;
 
-    public String COMMAND_REQUIREMENTS = "";
-
     public String COMMAND_CREATE_TAG_INVALID = "&c[⚑] &7Tag bractwa zawiera niedozwolone znaki.";
     public String COMMAND_CREATE_TAG_TOO_SHORT = "&c[⚑] &7Tag bractwa jest zbyt krótki. Tag musi zawierać conajmniej &c1 litere.";
     public String COMMAND_CREATE_TAG_TOO_LONG = "&c[⚑] &7Tag bractwa jest zbyt długi. Tag może zawierać maksymalnie &c8 liter.";
+    public String COMMAND_CREATE_TAG_EXISTS = "&c[⚑] &7Bractwo o tym tagu już istnieje.";
 
     public String COMMAND_CREATE_NAME_INVALID = "&c[⚑] &7Nazwa bractwa zawiera niedozwolone znaki.";
     public String COMMAND_CREATE_NAME_TOO_SHORT = "&c[⚑] &7Nazwa bractwa jest zbyt krótka. Nazwa musi zawierać conajmniej &c5 liter.";
     public String COMMAND_CREATE_NAME_TOO_LONG = "&c[⚑] &7Nazwa bractwa jest zbyt długa. Nazwa może zawierać maksymalnie &c30 liter.";
+
+    public String COMMAND_CREATE_MISSING_ITEMS = "&c[⚑] &7Posiadasz za mało przedmiotów:\n&c<missing-items>";
 
     @Comment("Event Messages")
     public String EVENT_BLOCK_BREAK = "&c[⛏] &7ɴɪᴇ ᴍᴏᴢᴇsᴢ &cɴɪsᴢᴄᴢʏᴄ&7 ɴᴀ ᴛᴇʀᴇɴɪᴇ ᴛᴇɢᴏ ʙʀᴀᴄᴛᴡᴀ.";
