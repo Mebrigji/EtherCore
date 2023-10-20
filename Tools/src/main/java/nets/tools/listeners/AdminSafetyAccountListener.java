@@ -31,8 +31,8 @@ public class AdminSafetyAccountListener implements Listener {
                 event.setCancelled(true);
                 if(event.getMessage().equals(String.valueOf(Main.getInstance().getSafety_pin()))){
                     playerExtension.removePersistentDataObject("accountBlocked");
-                    NotificationBuilder.of(NotificationBuilder.NotificationType.CHAT, "Konto zostało odblokowane.").send(playerExtension.getPlayer());
-                }
+                    NotificationBuilder.of(NotificationBuilder.NotificationType.CHAT, "<red>Konto zostało odblokowane.").send(event.getPlayer());
+                } else NotificationBuilder.of(NotificationBuilder.NotificationType.CHAT, "<red>Konto jest zablokowane").send(event.getPlayer());
             }
         });
     }

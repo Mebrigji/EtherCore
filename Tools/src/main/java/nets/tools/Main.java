@@ -41,6 +41,7 @@ import java.util.logging.Level;
 
 @Plugin(name = "Ether-Tools", version = "1.0-SNAPSHOT")
 @Dependency("Ether-API")
+@Dependency("UltimateAdvancementAPI")
 @ApiVersion(ApiVersion.Target.v1_20)
 @Author("Saidora")
 public class Main extends JavaPlugin {
@@ -58,6 +59,7 @@ public class Main extends JavaPlugin {
     @Getter private FormatConfiguration formatConfiguration;
 
     @Getter private TabFactory tabFactory;
+    @Getter private AdvancementFactory advancementFactory;
 
     @Getter private int safety_pin;
 
@@ -102,6 +104,10 @@ public class Main extends JavaPlugin {
         this.tabListConfiguration = configurationFactory.createDefault(TabListConfiguration.class, getDataFolder() + "/tablist.yml");
         this.brotherhoodConfiguration = configurationFactory.createDefault(BrotherhoodConfiguration.class, getDataFolder() + "/brotherhood.yml");
         this.formatConfiguration = configurationFactory.createDefault(FormatConfiguration.class, getDataFolder() + "/formats.yml");
+
+        advancementFactory = new AdvancementFactory(this);
+        advancementFactory
+                .register();
 
         this.connector = new MongodbConnector(configuration.MONGO_URI, this.configuration.MONGO_TABLE, walletConfiguration.WALLET_ID);
 
