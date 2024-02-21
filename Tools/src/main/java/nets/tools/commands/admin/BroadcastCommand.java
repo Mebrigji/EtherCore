@@ -9,8 +9,6 @@ import net.kyori.adventure.text.minimessage.tag.standard.StandardTags;
 import net.saidora.api.helpers.ComponentHelper;
 import nets.tools.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.logging.Level;
@@ -28,7 +26,8 @@ public class BroadcastCommand {
                             Bukkit.getOnlinePlayers().forEach(player -> api.displayCustomToast(player, (ItemStack) commandArguments.get("item"), (String) commandArguments.get("message"), AdvancementFrameType.TASK));
                         })
                 )
-                .then(new GreedyStringArgument("message")
+
+                .then(new GreedyStringArgument("chat")
                         .executes((commandSender, commandArguments) -> {
                             String text = (String) commandArguments.get(0);
                             ComponentHelper.futureComponent(text).thenAccept(component -> Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(component)));

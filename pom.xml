@@ -11,7 +11,7 @@
     <modules>
         <module>Tools</module>
         <module>API</module>
-        <module>PlayerWarps</module>
+        <module>web-api</module>
     </modules>
 
     <properties>

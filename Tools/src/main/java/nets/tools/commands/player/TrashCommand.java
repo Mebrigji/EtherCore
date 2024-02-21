@@ -6,6 +6,8 @@ import net.saidora.api.helpers.ComponentHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
+import java.util.Optional;
+
 public class TrashCommand {
 
     public void register(){
@@ -16,9 +18,9 @@ public class TrashCommand {
                     inventoryBuilder.setItem(31, itemStack -> itemStack.setType(Material.LAVA_BUCKET), itemMeta -> itemMeta.displayName(ComponentHelper.asComponent("<!italic>&cSpal itemy")));
                     inventoryBuilder.click(inventoryClickEvent -> {
                         if(inventoryClickEvent.getSlot() == 31) {
-                            for (int i = 0; i < inventoryBuilder.getInventory().getSize(); i++) {
+                            for (int i = 0; i < inventoryClickEvent.getInventory().getSize(); i++) {
                                 if(i == 31) continue;
-                                inventoryBuilder.getInventory().getItem(i).setType(Material.AIR);
+                                inventoryBuilder.setItem(i, itemStack -> itemStack.setType(Material.AIR));
                             }
                             inventoryClickEvent.setCancelled(true);
                         }

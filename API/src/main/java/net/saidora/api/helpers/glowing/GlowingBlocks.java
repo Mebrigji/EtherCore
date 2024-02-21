@@ -48,4 +48,28 @@ public class GlowingBlocks {
         });
     }
 
+    public static void sendGlowingBlock(Player p, Location loc, long lifetime, ChatColor color){
+        PlayerExtension.getPlayerExtend(p, playerExtension -> {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(API.getInstance(), () -> {
+
+                Shulker shulker = loc.getWorld().spawn(loc.clone().add(0.5, 0, 0.5), Shulker.class);
+                shulker.setInvisible(true);
+                shulker.setAI(false);
+                shulker.setCollidable(false);
+                shulker.setInvulnerable(true);
+
+                glowingBlocks.put(loc, shulker);
+
+                try {
+                    API.getInstance().getEntities().setGlowing(shulker, p, color);
+                } catch (ReflectiveOperationException e) {
+                    throw new RuntimeException(e);
+                }
+
+                Bukkit.getScheduler().scheduleSyncDelayedTask(API.getInstance(), shulker::remove, lifetime + (long) ((Math.random() + 1) * 100));
+
+            }, (long) ((Math.random() + 1) * 40));
+        });
+    }
+
 }

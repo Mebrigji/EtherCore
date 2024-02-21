@@ -33,7 +33,7 @@ public class WalletCommand {
                             NotificationBuilder.of(NotificationBuilder.NotificationType.CHAT, Main.getInstance().getWalletConfiguration().COMMAND_WALLET_HELP).send(commandSender);
                         })
                 )
-                .then(new MultiLiteralArgument("transfer", Arrays.asList("przelew", "przelej", "pay", "zaplac"))
+                .then(new LiteralArgument("transfer")
                         .combineWith(new PlayerArgument("player"), new DoubleArgument("amount"))
                         .executesPlayer((player, commandArguments) -> {
                             Player target = (Player) commandArguments.get("player");

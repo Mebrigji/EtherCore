@@ -46,7 +46,7 @@ public class AdvancementFactory implements Listener {
                 new BaseAdvancement("discord", new AdvancementDisplay(Material.PAPER, "Połącz konto z discordem", AdvancementFrameType.CHALLENGE, true, false, 1, 3, "Połącz konto z naszym discordem\n -> https://dc.ethercraft.pl/"), rootAdvancement),
                 new BaseAdvancement("marathon", new AdvancementDisplay(Material.DIAMOND_BOOTS, "Stań się maratończykiem", AdvancementFrameType.CHALLENGE, true, false, 2, 3, "Przebiegnij 100 kilometrów."), rootAdvancement),
                 new BaseAdvancement("masochist", new AdvancementDisplay(Material.IRON_SHOVEL, "Masochista", AdvancementFrameType.CHALLENGE, true, false, 3, 3, "Bądź podczas antylogouta przez 10 minut bez przerwy."), rootAdvancement),
-                new BaseAdvancement("curb", new AdvancementDisplay(Material.FEATHER, "Krawężnik", AdvancementFrameType.CHALLENGE, true, false, 4, 3, "Zgiń z wysokości skacząc z wysokości 4 bloków."), rootAdvancement)
+                new BaseAdvancement("curb", new AdvancementDisplay(Material.FEATHER, "Krawężnik", AdvancementFrameType.CHALLENGE, true, false, 4, 3, "Zgiń skacząc z wysokości 4 bloków."), rootAdvancement)
         );
 
         rootAdvancement = new RootAdvancement(levelSecond, "root", new AdvancementDisplay(Material.BEDROCK, "Ukończ poziom 1", AdvancementFrameType.GOAL, true, false, 0, 0, "Najpierw ukończ poziom 1."), "textures/block/end_stone.png");
@@ -57,12 +57,12 @@ public class AdvancementFactory implements Listener {
 
         rootAdvancement = new RootAdvancement(admin, "root", new AdvancementDisplay(Material.DEBUG_STICK, "Dołącz do administracji", AdvancementFrameType.GOAL, true, true, 0, 0, "Gratulujemy dołączenia do administracji!"), "textures/block/anvil.png");
         admin.registerAdvancements(rootAdvancement,
-                new BaseAdvancement("10praises", new AdvancementDisplay(Material.POPPY, "Zbierz 10 pochwał", AdvancementFrameType.GOAL, true, false, 0, 1, "Otrzymaj 10 pochwał od graczy"), rootAdvancement)
+                new BaseAdvancement("10praises", new AdvancementDisplay(Material.POPPY, "Zbierz 10 pochwał", AdvancementFrameType.GOAL, true, false, 0, 1, "Otrzymaj 10 pochwał od graczy"), rootAdvancement),
+                new BaseAdvancement("50praises", new AdvancementDisplay(Material.POPPY, "Zbierz 50 pochwał", AdvancementFrameType.GOAL, true, false, 1, 1, "Otrzymaj 50 pochwał od graczy"), rootAdvancement),
+                new BaseAdvancement("100praises", new AdvancementDisplay(Material.POPPY, "Zbierz 100 pochwał", AdvancementFrameType.GOAL, true, false, 2, 1, "Otrzymaj 100 pochwał od graczy"), rootAdvancement)
 
         );
     }
-
-
 
     @EventHandler
     public void handlePlayerLoadingCompletedEvent(PlayerLoadingCompletedEvent event){

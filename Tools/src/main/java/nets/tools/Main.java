@@ -25,6 +25,7 @@ import nets.tools.listeners.PlayerListener;
 import nets.tools.manager.UserManager;
 import nets.tools.objects.interactiveItems.ExpBottle;
 import nets.tools.commands.admin.*;
+import nets.tools.permissions.PermissionTreeNode;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -211,6 +212,13 @@ public class Main extends JavaPlugin {
         AdminSafetyAccountListener adminSafetyAccountListener = new AdminSafetyAccountListener();
         adminSafetyAccountListener.setupEvent();
         Bukkit.getPluginManager().registerEvents(adminSafetyAccountListener, this);
+
+        PermissionTreeNode permissionTree = PermissionTreeNode.TEST;
+
+        Bukkit.getPluginManager().getPermissions().forEach(permission -> {
+            permissionTree.addPermission(permission.getName());
+        });
+
     }
 
 

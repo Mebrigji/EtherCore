@@ -16,7 +16,7 @@ public class MessageCommand {
 
     public void register(){
         new CommandTree("msg")
-                .withAliases("message", "tell", "wiadomosc")
+                .withAliases("message", "tell", "wiadomosc", "r", "odpisz")
                 .then(new PlayerArgument("target")
                         .combineWith(new GreedyStringArgument("message"))
                         .executes((commandSender, commandArguments) -> {
@@ -31,31 +31,30 @@ public class MessageCommand {
                                 if(commandSender instanceof Player) playerExtension.addPersistentDataObject("reply", commandSender.getName());
                             });
                         })
-                ).override();
+                )
+                .then(new GreedyStringArgument("message")
+                        .executesPlayer((player, commandArguments) -> {
+                            String message = (String) commandArguments.get("message");
+                            assert message != null;
+                            PlayerExtension.getPlayerExtend(player, sender -> {
+                                String targetNickName = sender.getPersistentDataObject("reply", String.class);
 
-        new CommandAPICommand("reply")
-                .withAliases("r", "odpisz")
-                .withArguments(new GreedyStringArgument("message"))
-                .executesPlayer((player, commandArguments) -> {
-                    String message = (String) commandArguments.get("message");
-                    assert message != null;
-                    PlayerExtension.getPlayerExtend(player, sender -> {
-                        String targetNickName = sender.getPersistentDataObject("reply", String.class);
+                                Player exactPlayer;
+                                if(targetNickName == null || (exactPlayer = Bukkit.getPlayerExact(targetNickName)) == null){
+                                    ComponentHelper.futureComponent(Main.getInstance().getMessages().COMMAND_MESSAGE_REPLY_NOT_FOUND).thenAccept(player::sendMessage);
+                                    return;
+                                }
 
-                        Player exactPlayer;
-                        if(targetNickName == null || (exactPlayer = Bukkit.getPlayerExact(targetNickName)) == null){
-                            ComponentHelper.futureComponent(Main.getInstance().getMessages().COMMAND_MESSAGE_REPLY_NOT_FOUND).thenAccept(player::sendMessage);
-                            return;
-                        }
+                                Component text = Component.text(message);
+                                PlayerExtension.getPlayerExtend(exactPlayer, extension -> {
 
-                        Component text = Component.text(message);
-                        PlayerExtension.getPlayerExtend(exactPlayer, extension -> {
-
-                            ComponentHelper.futureComponent(Main.getInstance().getMessages().COMMAND_MESSAGE_FORMAT_SENDER, Placeholder.parsed("player", targetNickName), Placeholder.component("message", text)).thenAccept(player::sendMessage);
-                            ComponentHelper.futureComponent(Main.getInstance().getMessages().COMMAND_MESSAGE_FORMAT_RECEIVER, Placeholder.parsed("player", player.getName()), Placeholder.component("message", text)).thenAccept(exactPlayer::sendMessage);
-                            extension.addPersistentDataObject("reply", player.getName());
-                        });
-                    });
-                }).register();
+                                    ComponentHelper.futureComponent(Main.getInstance().getMessages().COMMAND_MESSAGE_FORMAT_SENDER, Placeholder.parsed("player", targetNickName), Placeholder.component("message", text)).thenAccept(player::sendMessage);
+                                    ComponentHelper.futureComponent(Main.getInstance().getMessages().COMMAND_MESSAGE_FORMAT_RECEIVER, Placeholder.parsed("player", player.getName()), Placeholder.component("message", text)).thenAccept(exactPlayer::sendMessage);
+                                    extension.addPersistentDataObject("reply", player.getName());
+                                });
+                            });
+                        })
+                )
+                .override();
     }
 }

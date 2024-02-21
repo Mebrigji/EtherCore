@@ -1,5 +1,6 @@
 package net.saidora.api;
 
+import lombok.Getter;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.saidora.api.builders.InventoryBuilder;
 import net.saidora.api.events.EventBuilder;
@@ -28,17 +29,11 @@ import java.util.logging.Level;
 @Description("[+] PlayerExtension#getExperience, PlayerExtension#addExperience, PlayerExtension#removeExperience")
 public class API extends JavaPlugin {
 
+    @Getter
     private static API instance;
 
-    public static API getInstance() {
-        return instance;
-    }
-
+    @Getter
     private final ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(2);
-
-    public ScheduledExecutorService getScheduledExecutorService() {
-        return scheduledExecutorService;
-    }
 
     private BukkitAudiences bukkitAudiences;
 
@@ -46,11 +41,8 @@ public class API extends JavaPlugin {
         return bukkitAudiences;
     }
 
+    @Getter
     private GlowingEntities entities;
-
-    public GlowingEntities getEntities() {
-        return entities;
-    }
 
     @Override
     public void onLoad() {

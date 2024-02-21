@@ -8,11 +8,14 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
 import com.mongodb.client.model.Updates;
+import lombok.Getter;
 import org.bson.Document;
 
 public class MongodbConnector {
 
+    @Getter
     private MongoClient mongoClient;
+    @Getter
     private MongoDatabase mongoDatabase;
 
     private MongoDatabase walletDatabase;
@@ -24,14 +27,6 @@ public class MongodbConnector {
         this.mongoDatabase = mongoClient.getDatabase(table);
         this.walletDatabase = mongoClient.getDatabase("Wallet");
         this.walletId = walletId;
-    }
-
-    public MongoClient getMongoClient() {
-        return mongoClient;
-    }
-
-    public MongoDatabase getMongoDatabase() {
-        return mongoDatabase;
     }
 
     /*
